@@ -3,7 +3,7 @@ import { motion, useInView, animate } from "framer-motion";
 import {
   ChevronDown, ChevronLeft, ChevronRight, ArrowRight, Phone, Mail, Users, Award, Shield, Zap,
   CheckCircle, Globe, Server, Layers, Calendar,
-  FileText, TrendingUp, Lock, RefreshCw, ExternalLink, CreditCard, Search, Database
+  FileText, TrendingUp, Lock, RefreshCw, ExternalLink, CreditCard, Search, Database, Download, X
 } from "lucide-react";
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
@@ -17,6 +17,7 @@ const logoDark = themeAsset("logo-dark.png");
 const chrisHoover = themeAsset("chris-hoover.jpg");
 const plrbLogo = themeAsset("plrb-logo.png");
 const justinWatsonPhoto = themeAsset("justin-watson.jpg");
+const casConceptPdf = themeAsset("NCJA_DNA_Concept.pdf");
 
 // ─── Fade-in on scroll wrapper ───────────────────────────────────────────────
 const FadeIn = ({ children, delay = 0, className = "" }: {
@@ -70,6 +71,7 @@ const NAV_LINKS = [
 export default function RFI() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [conceptOpen, setConceptOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("overview");
   const navRef = useRef<HTMLElement>(null);
 
@@ -97,6 +99,22 @@ export default function RFI() {
     }
   }, [activeSection]);
 
+  useEffect(() => {
+    if (!conceptOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setConceptOpen(false);
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [conceptOpen]);
+
   const scrollNav = (dir: "left" | "right") => {
     if (!navRef.current) return;
     navRef.current.scrollBy({ left: dir === "right" ? 200 : -200, behavior: "smooth" });
@@ -107,14 +125,26 @@ export default function RFI() {
 
       {/* ── Sticky Nav ─────────────────────────────────────────────────── */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
+        scrolled || menuOpen
           ? "bg-background/95 backdrop-blur-md shadow-sm"
           : "bg-[hsl(220,25%,10%)/80] backdrop-blur-sm"
       }`}>
         {/* Top bar: logo + CTA */}
         <div className={`container-wide mx-auto px-6 lg:px-12 flex items-center justify-between transition-all duration-300 ${scrolled ? "py-3" : "py-4"}`}>
-          <img src={scrolled ? logoColor : logoDark} alt="AS Creative Services" className="h-9 md:h-10" />
+          <img src={scrolled || menuOpen ? logoColor : logoDark} alt="AS Creative Services" className="h-9 md:h-10" />
           <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setConceptOpen(true)}
+              className={`hidden lg:inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full border transition-all duration-200 ${
+                scrolled
+                  ? "border-primary/70 text-primary hover:bg-primary hover:text-white"
+                  : "border-primary/70 text-primary hover:bg-primary hover:text-white"
+              }`}
+            >
+              <FileText className="w-3.5 h-3.5" />
+              View NCJA Concept
+            </button>
             <a
               href="https://ascreativeservices.com"
               target="_blank"
@@ -131,8 +161,16 @@ export default function RFI() {
             <a href="https://ascreativeservices.com/contact/" target="_blank" rel="noopener noreferrer" className="hidden lg:inline-flex btn-primary text-xs py-2.5 px-5">
               Schedule Discussion
             </a>
+            <button
+              type="button"
+              onClick={() => setConceptOpen(true)}
+              className="inline-flex lg:hidden items-center gap-2 rounded-full border border-primary/70 px-3.5 py-2 text-[11px] font-bold uppercase tracking-wider text-primary transition-colors hover:bg-primary hover:text-white"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              View PDF
+            </button>
             {/* Mobile hamburger */}
-            <button onClick={() => setMenuOpen(o => !o)} className="lg:hidden p-2" style={{ color: scrolled ? "hsl(var(--foreground))" : "#fff" }}>
+            <button onClick={() => setMenuOpen(o => !o)} className="lg:hidden p-2" style={{ color: scrolled || menuOpen ? "hsl(var(--foreground))" : "#fff" }}>
               <div className={`w-5 h-0.5 bg-current mb-1 transition-all ${menuOpen ? "rotate-45 translate-y-1.5" : ""}`} />
               <div className={`w-5 h-0.5 bg-current mb-1 transition-all ${menuOpen ? "opacity-0" : ""}`} />
               <div className={`w-5 h-0.5 bg-current transition-all ${menuOpen ? "-rotate-45 -translate-y-1.5" : ""}`} />
@@ -207,6 +245,48 @@ export default function RFI() {
           </div>
         )}
       </header>
+
+      {conceptOpen && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/88 backdrop-blur-sm px-4 py-6 md:px-8 md:py-9"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="cas-concept-title"
+        >
+          <div className="mx-auto flex h-full max-w-[1728px] flex-col overflow-hidden rounded-xl bg-white shadow-2xl">
+            <div className="flex min-h-[92px] items-center justify-between gap-4 border-b border-slate-200 px-6 md:px-8">
+              <h2 id="cas-concept-title" className="text-lg font-bold tracking-wide text-slate-700">
+                NCJA Concept
+              </h2>
+              <div className="flex items-center gap-4">
+                <a
+                  href={casConceptPdf}
+                  download="NCJA_DNA_Concept.pdf"
+                  className="inline-flex items-center gap-2 rounded-full border border-primary/35 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-primary transition-colors hover:bg-primary hover:text-white"
+                >
+                  <Download className="w-4 h-4" />
+                  Download
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setConceptOpen(false)}
+                  className="rounded-full p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
+                  aria-label="Close NCJA concept preview"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+            <div className="min-h-0 flex-1 bg-slate-100">
+              <iframe
+                title="NCJA Concept PDF preview"
+                src={`${casConceptPdf}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+                className="h-full w-full border-0"
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── SECTION 1: HERO ─────────────────────────────────────────────── */}
       <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden"
@@ -720,10 +800,8 @@ export default function RFI() {
               <div className="divide-y divide-border">
                 {[
                   { item: "Website Strategy, Design & Development", note: "Discovery, UX, visual system, WordPress + Laravel build, content migration, training", cost: "$39,724" },
-                  { item: "AS Creative Managed Hosting — Year 1", note: "Managed hosting, security updates, uptime monitoring", cost: "$1,888" },
-                  { item: "AS Creative Managed Hosting — Year 2", note: "Managed hosting, security updates, uptime monitoring", cost: "$1,888" },
-                  { item: "AS Accessibility Services — Year 1", note: "ADA compliance tooling & monitoring", cost: "$2,400" },
-                  { item: "AS Accessibility Services — Year 2", note: "ADA compliance tooling & monitoring", cost: "$2,400" },
+                  { item: "AS Creative Managed Hosting (24 Months)", note: "Managed hosting, security updates, uptime monitoring", cost: "$3,776" },
+                  { item: "AS Accessibility Services (24 Months)", note: "ADA compliance tooling & monitoring", cost: "$4,800" },
                   { item: "Included 40 Hours Development Services (24 Months)", note: "Post-launch enhancements & support hours", cost: "Included" },
                 ].map((row, i) => (
                   <div key={i} className="grid grid-cols-12 gap-4 px-6 md:px-10 py-5 items-center hover:bg-secondary/40 transition-colors">

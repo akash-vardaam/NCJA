@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Design System - AS Creative Services */
+
+@layer base {
+  :root {
+    /* Core brand colors */
+    --background: 0 0% 100%;
+    --foreground: 220 20% 20%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 20%;
+
+    /* Primary - Brand Green #1fb156 */
+    --primary: 143 70% 41%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Soft gray */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 20% 20%;
+
+    /* Muted */
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 10% 46%;
+
+    /* Accent - Light green tint */
+    --accent: 134 40% 95%;
+    --accent-foreground: 134 54% 35%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 134 54% 49%;
+
+    --radius: 0.75rem;
+
+    /* Custom tokens */
+    --hero-overlay: 220 30% 10%;
+    --section-dark: 220 25% 12%;
+    --section-dark-foreground: 0 0% 98%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(134, 54%, 49%) 0%, hsl(134, 60%, 40%) 100%);
+    --gradient-dark: linear-gradient(180deg, hsl(220, 25%, 8%) 0%, hsl(220, 25%, 15%) 100%);
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 8px -2px hsl(220 20% 20% / 0.08);
+    --shadow-md: 0 8px 24px -4px hsl(220 20% 20% / 0.12);
+    --shadow-lg: 0 16px 48px -8px hsl(220 20% 20% / 0.16);
+    --shadow-primary: 0 8px 24px -4px hsl(134 54% 49% / 0.35);
+
+    /* Sidebar */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 134 54% 49%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 134 40% 95%;
+    --sidebar-accent-foreground: 134 54% 35%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 134 54% 49%;
+  }
+
+  .dark {
+    --background: 220 25% 8%;
+    --foreground: 0 0% 98%;
+
+    --card: 220 25% 12%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 220 25% 12%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 134 54% 49%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 20% 18%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 220 20% 18%;
+    --muted-foreground: 220 10% 65%;
+
+    --accent: 134 40% 15%;
+    --accent-foreground: 134 54% 60%;
+
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 20% 18%;
+    --input: 220 20% 18%;
+    --ring: 134 54% 49%;
+
+    --sidebar-background: 220 25% 10%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 134 54% 49%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 20% 15%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 220 20% 18%;
+    --sidebar-ring: 134 54% 49%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply px-6 py-16 md:px-8 md:py-24 lg:px-12 lg:py-32;
+  }
+
+  .container-wide {
+    @apply max-w-7xl mx-auto;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-primary);
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-3 px-6 py-3.5 rounded-full font-medium text-sm uppercase tracking-wider transition-all duration-300;
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    box-shadow: var(--shadow-primary);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px -4px hsl(134 54% 49% / 0.45);
+  }
+
+  .card-feature {
+    @apply p-8 rounded-2xl bg-card border border-border/50 transition-all duration-300;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .card-feature:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+  }
+
+  .icon-circle {
+    @apply w-14 h-14 rounded-full flex items-center justify-center;
+    background: hsl(var(--accent));
+  }
+
+  .icon-circle svg {
+    @apply w-6 h-6;
+    color: hsl(var(--primary));
+  }
+}
